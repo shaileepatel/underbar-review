@@ -109,6 +109,23 @@
     if (iterator === undefined) {
       iterator = _.identity;
     }
+
+    if (isSorted) {
+      let result = [array[0]];
+      var start = 0;
+      var end = 1;
+      while (end < array.length) {
+        if (iterator(array[start]) !== iterator(array[end])) {
+          result.push(array[end]);
+          end++;
+          start = end;
+        } else {
+          end++;
+        }
+      }
+      return result;
+    }
+
     let result = [];
     if (iterator !== undefined) {
       _.each(array, function(item, index) {
