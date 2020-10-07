@@ -347,11 +347,11 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var args = [...arguments];
     setTimeout(function() {
-      return func.apply(this, arguments);
+      func.apply(this, args.slice(2));
     }, wait);
   };
-
 
   /**
    * ADVANCED COLLECTION OPERATIONS
@@ -364,6 +364,31 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var placement = {};
+
+    _.each(array, function(item, i) {
+      let rand = Math.floor(Math.random() * array.length);
+      if (placement[rand] === undefined) {
+        placement[rand] = item;
+      } else {
+        while (placement[rand] !== undefined) {
+          rand = Math.floor(Math.random() * array.length);
+          if (placement[rand] === undefined) {
+            placement[rand] = item;
+            break;
+          }
+        }
+      }
+    });
+    let result = [];
+    _.each(placement, function(value, key) {
+      _.each(array, function(item, i) {
+        if (key === i.toString()) {
+          result.push(value);
+        }
+      });
+    });
+    return result;
   };
 
 
